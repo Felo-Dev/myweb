@@ -26,6 +26,44 @@ body {
   /* cursor: none; */
 }
 
+/* Restaurar visibilidad del cursor (forzar en caso de reglas previas) */
+body {
+  cursor: auto !important;
+}
+
+/* puntero en elementos interactivos */
+a, button, .btn, .cert-item img, .socials a {
+  cursor: pointer;
+}
+
+/* --- (opcional) pequeño punto indicador de cursor --- 
+   Si quieres usarlo, añade un <div class="cursor-dot"></div> en <body>
+   y un pequeño script en App.jsx que siga pointermove (opcional).
+*/
+.cursor-dot{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(91,141,239,0.95);
+  pointer-events: none;
+  transform: translate(-50%,-50%) scale(1);
+  transition: transform .08s linear, opacity .12s linear;
+  z-index: 99999;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+/* opción: agrandar al pasar sobre elemento clicable */
+a:hover ~ .cursor-dot,
+button:hover ~ .cursor-dot,
+.btn:hover ~ .cursor-dot,
+.cert-item img:hover ~ .cursor-dot {
+  transform: translate(-50%,-50%) scale(1.6);
+}
+
 /* canvas full screen */
 .canvas-bg {
   position: fixed;
@@ -70,11 +108,14 @@ body {
   grid-template-columns: 1fr 340px;
   gap: 28px;
   align-items: start;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  /* fondo azul oscuro translúcido con blur más marcado */
+  background: linear-gradient(180deg, rgba(6,12,30,0.62), rgba(10,20,40,0.36));
+  border: 1px solid rgba(91,141,239,0.12); /* borde azulado sutil */
   padding: 28px;
   border-radius: 14px;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 40px rgba(6,12,30,0.6);
   /* eliminar restricciones que causan scroll dentro del card */
   max-height: none;
   overflow: visible;
@@ -875,15 +916,17 @@ a:focus, button:focus {
 .contact-card,
 .intro-left,
 .about-grid > .about-text {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.04);
+  /* azul oscuro translúcido similar al intro */
+  background: linear-gradient(180deg, rgba(6,12,30,0.5), rgba(9,16,34,0.28));
+  border: 1px solid rgba(91,141,239,0.08);
   border-radius: 12px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 16px;
   box-sizing: border-box;
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
   overflow: visible;
+  box-shadow: 0 8px 30px rgba(6,12,30,0.38);
 }
 
 /* micro-interacción: ligera elevación al pasar el ratón (y foco accesible) */
@@ -892,18 +935,22 @@ a:focus, button:focus {
 .skills-panel:hover,
 .contact-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 50px rgba(6,8,12,0.45);
+  box-shadow: 0 20px 60px rgba(6,12,30,0.55);
 }
 
-/* mantener buen comportamiento en mobile (reducir efecto si el dispositivo lo pide) */
+/* mobile: reducir intensidad del blur y sombras para rendimiento */
 @media (max-width: 900px) {
+  .card-intro,
   .panel:not(.card-intro),
   .card-about,
   .skills-panel,
-  .contact-card {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    padding: 12px;
+  .contact-card,
+  .intro-left,
+  .about-grid > .about-text {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 8px 24px rgba(6,12,30,0.32);
+    background: linear-gradient(180deg, rgba(6,12,30,0.56), rgba(9,16,34,0.22));
   }
 }
 
