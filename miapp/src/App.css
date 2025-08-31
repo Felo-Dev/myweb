@@ -1,0 +1,869 @@
+:root {
+  --bg-dark: #071024;
+  --bg-mid: #0f172a;
+  --card: rgba(255, 255, 255, 0.04);
+  --muted: #9aa4b2;
+  --accent: #5b8def;
+  --accent-2: #4ad6b6;
+  --white: #eaf2ff;
+  --hover-bg: rgba(91, 141, 239, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-dark) 100%);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  /* cursor: none; */
+}
+
+/* canvas full screen */
+.canvas-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* root layout full viewport - permitir scroll de la página (no ocultar overflow) */
+.app-root {
+  min-height: 100vh; /* ocupa pantalla mínima */
+  width: 100%;
+  position: relative;
+  overflow: visible; /* permitir scroll en la página, no esconder contenido */
+  display: flex;
+  align-items: flex-start; /* alinear desde arriba para que los contenedores crezcan naturalmente */
+  justify-content: center;
+  padding: 28px 20px;
+}
+
+/* content wrapper - dejar que crezca con el contenido */
+.card-layout {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* eliminar height:100% para que el contenedor crezca */
+  justify-content: flex-start;
+  padding-bottom: 40px; /* espacio inferior para scroll cómodo */
+}
+
+/* intro card - quitar altura máxima y overflow interno */
+.card-intro {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 28px;
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+  /* eliminar restricciones que causan scroll dentro del card */
+  max-height: none;
+  overflow: visible;
+}
+
+/* Fix final: asegurar single-column y centrar perfil en mobile */
+@media (max-width: 900px) {
+  /* fuerza que la tarjeta intro use una sola columna */
+  .card-intro {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* aside de perfil debe ocupar toda la fila y quedar centrado */
+  .desktop-only {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    margin-top: 12px;
+  }
+
+  .intro-right {
+    position: relative;
+    z-index: 2;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin: 12px 0 0 0;
+    padding: 12px 8px;
+    box-sizing: border-box;
+  }
+
+  /* foto centrada y responsiva */
+  .profile-desktop {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  .intro-right .profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* info centrada y con wrapping correcto */
+  .meta-desktop {
+    width: 100%;
+    max-width: 640px;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .profile-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 8px 0 0 0;
+    align-items: center;
+  }
+
+  .profile-list .pl-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .profile-list .pl-item strong { display: block; color: var(--white); }
+  .profile-list .pl-item span,
+  .profile-list a,
+  .stack {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+  }
+
+  /* evitar que algún elemento utilice transform que lo saque del flujo */
+  .intro-right .profile,
+  .intro-right .meta { transform: none !important; right: auto !important; left: auto !important; }
+
+  /* pequeños ajustes para pantallas muy estrechas */
+  @media (max-width: 420px) {
+    .profile-desktop { width: 100px; height: 100px; }
+    .meta-desktop { padding: 6px 8px; }
+    .profile-list .pl-item { padding: 8px; }
+  }
+}
+
+/* left column */
+.badge {
+  display: inline-block;
+  background: rgba(91, 141, 239, 0.12);
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.badge h1 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--white);
+  font-weight: 700;
+}
+h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+}
+.role {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+.lead {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+/* profile square consistent */
+.profile {
+  width: 220px;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: block;
+}
+.profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* hover estilo del perfil (desktop) */
+.profile:hover {
+  border-color: var(--accent);
+  box-shadow: 0 16px 40px rgba(91, 141, 239, 0.12);
+  transform: translateY(-6px);
+  transition: all 0.16s ease;
+  background-color: #211f3e83;
+}
+
+/* mobile in-column profile (hidden on desktop) */
+.profile-mobile {
+  display: none;
+  margin: 14px 0;
+  text-align: center;
+}
+.profile-mobile .profile {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+/* buttons */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+.btn.primary {
+  background: linear-gradient(90deg, var(--accent), #4a6fdb);
+}
+.btn.outline {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* hover changes: invert colors slightly to be pleasant */
+.btn.primary:hover {
+  background: linear-gradient(90deg, #4a6fdb, var(--accent));
+  box-shadow: 0 10px 30px rgba(75, 115, 240, 0.12);
+  transform: translateY(-3px);
+}
+.btn.outline:hover {
+  background: var(--hover-bg);
+  color: var(--white);
+  border-color: rgba(91, 141, 239, 0.3);
+  transform: translateY(-2px);
+}
+
+/* skills list */
+.skills {
+  margin-top: 6px;
+  color: var(--muted);
+}
+.skills ul {
+  margin: 8px 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.skills li {
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.12s ease;
+}
+.fa-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* hover skill: color y fondo */
+.skills li:hover {
+  background: var(--hover-bg);
+  color: var(--white);
+  transform: translateX(6px);
+}
+
+/* socials */
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.socials a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1.05rem;
+  padding: 6px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+.socials a:hover {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* meta text */
+.meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 12px;
+  text-align: left;
+}
+
+.exp p:hover {
+  color: #4ad6b6;
+  font-weight: bold;
+}
+
+/* about card */
+.card-about {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  max-height: none; /* permitir crecimiento */
+  overflow: visible; /* evitar scroll interno */
+}
+
+/* certificados: grid responsive y accesible */
+.imgCert{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  align-items: start;
+  margin-top: 12px;
+}
+
+.cert-item{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.cert-item img{
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+
+.cert-item img:hover,
+.cert-item img:focus{
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  outline: none;
+}
+
+/* caption */
+.cert-item figcaption{
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* lightbox / modal */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6,8,12,0.78);
+  z-index: 9999;
+  padding: 20px;
+}
+
+.lightbox-inner{
+  width: 100%;
+  max-width: 1000px;
+  max-height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lightbox-inner img{
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.lightbox-caption{
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* close button */
+.lightbox-close{
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .12s ease, transform .12s ease;
+}
+.lightbox-close:hover,
+.lightbox-close:focus{
+  background: var(--accent);
+  transform: scale(1.05);
+  outline: none;
+}
+
+/* =========================
+   Animaciones y micro-interacciones
+   ========================= */
+
+/* keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes bgPulse {
+  0% { filter: hue-rotate(0deg) brightness(0.98); }
+  50% { filter: hue-rotate(6deg) brightness(1.02); }
+  100% { filter: hue-rotate(0deg) brightness(0.98); }
+}
+@keyframes floatY {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+/* reveal base: panels start hidden and animate when .in-view */
+.panel, .cert-item, .intro-header, .profile, .card-about, .skills li {
+  opacity: 0;
+  transform: translateY(10px);
+  will-change: transform, opacity;
+  transition: opacity .42s ease, transform .42s ease;
+}
+
+/* when in viewport */
+.panel.in-view,
+.cert-item.in-view,
+.intro-header.in-view,
+.profile.in-view,
+.card-about.in-view,
+.skills li.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* staggered appearance for skills list */
+.skills li { transform-origin: left top; }
+.skills li:nth-child(1){ transition-delay: 0ms; }
+.skills li:nth-child(2){ transition-delay: 40ms; }
+.skills li:nth-child(3){ transition-delay: 80ms; }
+.skills li:nth-child(4){ transition-delay: 120ms; }
+.skills li:nth-child(5){ transition-delay: 160ms; }
+.skills li:nth-child(6){ transition-delay: 200ms; }
+.skills li:nth-child(7){ transition-delay: 240ms; }
+.skills li:nth-child(8){ transition-delay: 280ms; }
+.skills li:nth-child(9){ transition-delay: 320ms; }
+.skills li:nth-child(10){ transition-delay: 360ms; }
+
+/* subtle floating effect on desktop profile */
+.profile-desktop.in-view { animation: floatY 6s ease-in-out infinite; }
+
+/* parallax variables used by .card-intro (actualizados desde JS) */
+.card-intro { --mx: 0; --my: 0; }
+.intro-right .profile {
+  transform: translate3d(calc(var(--mx) * 10px), calc(var(--my) * 8px), 0);
+  transition: transform .12s linear;
+}
+
+/* hover / focus micro interactions */
+.btn { transition: transform .12s ease, box-shadow .12s ease, background .12s ease; }
+.btn:active { transform: translateY(1px) scale(.997); }
+.btn.primary:hover { transform: translateY(-4px) scale(1.01); }
+.btn.outline:hover { transform: translateY(-3px); }
+
+/* certificates: improved hover + pop animation */
+.cert-item img {
+  transition: transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s ease;
+  will-change: transform, box-shadow;
+}
+.cert-item img:hover,
+.cert-item img:focus {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 22px 50px rgba(8,12,20,0.6);
+  z-index: 2;
+}
+
+/* lightbox animation */
+.lightbox {
+  animation: popIn .12s ease;
+  background: linear-gradient(rgba(6,8,12,0.82), rgba(6,8,12,0.82));
+  backdrop-filter: blur(4px);
+}
+.lightbox-inner {
+  animation: popIn .18s cubic-bezier(.2,.9,.3,1);
+  transform-origin: center;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(6,8,12,0.6);
+}
+.lightbox-inner img { transition: transform .18s ease; }
+.lightbox-inner img:active { transform: scale(.995); }
+
+/* social icons hover */
+.socials a { transition: color .14s ease, transform .12s ease; }
+.socials a:hover { transform: translateY(-4px); color: var(--accent); }
+
+/* nice subtle background movement for large screens */
+@media (min-width: 1200px) {
+  .canvas-bg { animation: bgPulse 16s ease-in-out infinite; }
+}
+
+/* responsive: reduce motion and simplify on small screens */
+@media (max-width: 900px) {
+  .panel, .cert-item, .intro-header, .profile, .card-about, .skills li {
+    transition: opacity .35s ease, transform .35s ease;
+  }
+
+  /* mobile profile slide-in */
+  .profile-mobile { transform: translateY(6px); transition: transform .36s ease, opacity .36s ease; }
+  .profile-mobile.in-view { transform: translateY(0); opacity: 1; }
+
+  /* make buttons larger on touch devices */
+  .btn { padding: 12px 16px; font-size: 1rem; }
+
+  /* simplify parallax: no transform on small */
+  .intro-right .profile { transform: none !important; }
+}
+
+/* Ajustes para que el perfil no quede a un lado en mobile y se muestre en lista vertical */
+@media (max-width: 900px) {
+  /* Mostrar el aside del perfil como bloque completo y colocarlo debajo */
+  .desktop-only {
+    display: block !important;
+    width: 100%;
+    grid-column: 1 / -1; /* ocupa toda la fila del grid */
+    margin-top: 12px;
+  }
+
+  /* Estructura: foto a la izquierda y datos a la derecha en pequeño ancho, o totalmente apilado */
+  .intro-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center; /* centrar imagen + contenido */
+    justify-content: center;
+    padding: 12px 10px;
+    background: transparent;
+    text-align: center;
+  }
+
+  .profile-desktop {
+    width: 120px;
+    height: 120px;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .meta-desktop {
+    text-align: center;
+    width: 100%;
+    padding: 0 6px;
+  }
+
+  .profile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    align-items: center;
+  }
+
+  /* cada ítem en columna y centrado para mejor lectura en móvil */
+  .profile-list .pl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    padding: 8px 12px;
+    width: 100%;
+  }
+
+  .profile-list .pl-item strong {
+    min-width: initial;
+    display: block;
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .profile-list .pl-item span,
+  .profile-list a,
+  .stack {
+    white-space: normal;
+    word-break: break-word;
+    color: var(--muted);
+  }
+
+  .socials-inline {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .socials-inline a {
+    margin: 0 6px;
+  }
+}
+
+/* ajustes finos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .intro-right { padding: 10px 8px; }
+  .profile-desktop { width: 110px; height: 110px; }
+  .profile-list .pl-item { padding: 10px; }
+  .profile-list .pl-item strong { font-size: 0.95rem; }
+  .badge h1 { font-size: 0.9rem; }
+}
+
+/* accessibility: respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .cert-item,
+  .intro-header,
+  .profile,
+  .card-about,
+  .skills li,
+  .canvas-bg {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* focus styles (visible) */
+a:focus, button:focus {
+  outline: 3px solid rgba(91,141,239,0.18);
+  outline-offset: 3px;
+  box-shadow: 0 8px 30px rgba(91,141,239,0.06);
+}
+
+/* Perfil: mostrar info en lista vertical, espacio y accesibilidad */
+.meta-desktop {
+  padding-top: 8px;
+}
+
+/* lista vertical del perfil */
+.profile-list {
+  list-style: none;
+  margin: 8px 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-list .pl-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+  transition: background .12s ease, transform .12s ease;
+}
+
+/* destaca al pasar el ratón */
+.profile-list .pl-item:hover {
+  background: var(--hover-bg);
+  color: var(--white);
+  transform: translateX(6px);
+}
+
+/* estilo de los spans dentro de los items (texto a la derecha del label) */
+.profile-list .pl-item strong { min-width: 80px; font-weight:600; color:var(--white) }
+.profile-list .pl-item span { color: var(--muted); }
+
+/* enlaces dentro de la lista */
+.profile-list a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.profile-list a:hover, .profile-list a:focus {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* sociales en línea */
+.socials-inline { gap: 12px; }
+.socials-inline a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  color: var(--muted);
+}
+.socials-inline a:hover { color: var(--accent); background: rgba(255,255,255,0.02) }
+
+/* asegúrate que en mobile no haya conflictos (se mantiene vertical) */
+@media (max-width: 900px) {
+  .intro-right { order: 99; } /* si aparece en DOM, poner abajo en mobile */
+  .profile-desktop { width: 120px; height: 120px; margin: 0 auto 8px; }
+  .meta-desktop { text-align: center; }
+  .profile-list .pl-item { justify-content: center; gap: 8px; }
+  .profile-list .pl-item strong { display: none; } /* ahorrar espacio en mobile */
+}
+
+/* Overrides finales para centrar perfil e información en mobile */
+@media (max-width: 900px) {
+  .desktop-only {
+    display: block !important;
+    width: 100%;
+    grid-column: 1 / -1;
+    margin-top: 12px;
+  }
+
+  .intro-right {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 10px;
+    background: transparent;
+    text-align: center;
+    order: 99;
+  }
+
+  .profile-desktop {
+    width: 120px;
+    height: 120px;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .meta-desktop {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .profile-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+
+  .profile-list .pl-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    text-align: center;
+    background: transparent;
+  }
+
+  .profile-list .pl-item strong {
+    display: block;
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .profile-list .pl-item span,
+  .profile-list a,
+  .stack {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+  }
+
+  .profile-list a {
+    color: var(--muted);
+    word-break: break-word;
+  }
+
+  .socials-inline {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ajustes extra para pantallas muy pequeñas */
+  @media (max-width: 420px) {
+    .profile-desktop { width: 100px; height: 100px; }
+    .meta-desktop { padding: 0 8px; }
+    .profile-list .pl-item { padding: 8px; }
+    .badge h1 { font-size: 0.9rem; }
+  }
+}
