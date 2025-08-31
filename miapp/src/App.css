@@ -867,3 +867,55 @@ a:focus, button:focus {
     .badge h1 { font-size: 0.9rem; }
   }
 }
+
+/* Unificar efecto "glass / blur" en todas las secciones */
+.panel:not(.card-intro),
+.card-about,
+.skills-panel,
+.contact-card,
+.intro-left,
+.about-grid > .about-text {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 16px;
+  box-sizing: border-box;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  overflow: visible;
+}
+
+/* micro-interacción: ligera elevación al pasar el ratón (y foco accesible) */
+.panel:not(.card-intro):hover,
+.card-about:hover,
+.skills-panel:hover,
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 50px rgba(6,8,12,0.45);
+}
+
+/* mantener buen comportamiento en mobile (reducir efecto si el dispositivo lo pide) */
+@media (max-width: 900px) {
+  .panel:not(.card-intro),
+  .card-about,
+  .skills-panel,
+  .contact-card {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 12px;
+  }
+}
+
+/* accesibilidad: si el usuario prefiere reducir movimiento, quitar las animaciones */
+@media (prefers-reduced-motion: reduce) {
+  .panel:not(.card-intro),
+  .card-about,
+  .skills-panel,
+  .contact-card {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
