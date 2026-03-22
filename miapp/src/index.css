@@ -24,15 +24,15 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  display: block; /* Importante: Bloque normal para permitir scroll y layout propio */
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Asegurar que el contenedor de React ocupe todo el espacio */
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 button {
