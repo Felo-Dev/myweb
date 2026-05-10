@@ -8,7 +8,7 @@ export default function Stack({ language }) {
     en: { title: "TECH STACK" }
   }[language];
 
-  const palette = ['#FF5A7A', '#FF9F43', '#FFD43B', '#4CD97B', '#20C3D6', '#3B82F6', '#8B5CF6'];
+  const palette = ['#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#06b6d4', '#3b82f6', '#14b8a6'];
 
   const skills = [
     { name: "REACT / NEXT.JS", rating: 5, Icon: SiReact },
@@ -17,12 +17,12 @@ export default function Stack({ language }) {
     { name: "NODE.JS / EXPRESS", rating: 3, Icon: SiNodedotjs },
     { name: "PYTHON / DJANGO", rating: 3, Icon: SiPython },
     { name: "REACT NATIVE", rating: 3, Icon: SiReact },
-    { name: "DOCKER / LINUX", rating: 2, Icon: SiDocker },
+    { name: "DOCKER / LINUX", rating: 3, Icon: SiDocker },
   ];
 
   return (
     <section id="stack" className="section-card">
-      <h2 className="section-title">{content.title}</h2>
+      <h2 className="section-title"><GradientText text={content.title} /></h2>
       <div className="stack-grid">
         {skills.map((s, index) => (
           <div key={index} className="skill-item">
@@ -42,9 +42,7 @@ export default function Stack({ language }) {
             >
               <s.Icon size={28} />
             </div>
-            <div style={{ marginTop: 10, fontWeight: 700, fontSize: '0.9rem', textAlign: 'center' }}>
-              {s.name}
-            </div>
+            <div className="skill-name">{s.name}</div>
             <div className="rating-dots" style={{ marginTop: 8 }}>
               {[...Array(5)].map((_, i) => (
                 <div

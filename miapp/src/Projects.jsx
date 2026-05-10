@@ -4,7 +4,7 @@ import GradientText from './GradientText';
 export default function Projects({ language }) {
   const content = {
     es: {
-      title: "PROYECTOS DESTACADOS (CUPONES)",
+      title: "PROYECTOS DESTACADOS",
       items: [
         { 
           type: "App", 
@@ -16,22 +16,29 @@ export default function Projects({ language }) {
           type: "TV", 
           name: "APP CLÍNICA TV", 
           tech: "Gestión turnos · Sockets",
-          desc: "Implementación de comunicación bidireccional mediante WebSockets para la sincronización de turnos en tiempo real con latencia mínima."
+          desc: "Comunicación bidireccional mediante WebSockets para sincronización de turnos en tiempo real con latencia mínima."
         },
         { 
           type: "API", 
           name: "API VALIDATOR", 
           tech: "Node.js · Express",
-          desc: "Desarrollo de servicios robustos en Node.js, gestionando flujos de validación asíncronos y middlewares de seguridad avanzados."
+          desc: "Servicios robustos en Node.js con flujos de validación asíncronos y middlewares de seguridad avanzados."
+        },
+        { 
+          type: "DevOps", 
+          name: "DOCKER INFRA", 
+          tech: "Docker · CI/CD · Linux",
+          desc: "Infraestructura basada en contenedores Docker para entornos de desarrollo y producción. Automatización de builds y despliegues con pipelines de integración continua."
         }
       ]
     },
     en: {
-      title: "FEATURED PROJECTS (COUPONS)",
+      title: "FEATURED PROJECTS",
       items: [
         { type: "App", name: "MOBILE APP", tech: "React Native · iOS/Android", desc: "Architecture of reactive and scalable components using the React ecosystem, optimizing rendering and local data persistence." },
-        { type: "TV", name: "TV CLINIC APP", tech: "Queue Management · Sockets", desc: "Implementation of bidirectional communication via WebSockets for real-time shift synchronization with minimal latency." },
-        { type: "API", name: "API VALIDATOR", tech: "Node.js · Express", desc: "Development of robust Node.js services, managing asynchronous validation flows and advanced security middlewares." }
+        { type: "TV", name: "TV CLINIC APP", tech: "Queue Management · Sockets", desc: "Bidirectional communication via WebSockets for real-time shift synchronization with minimal latency." },
+        { type: "API", name: "API VALIDATOR", tech: "Node.js · Express", desc: "Robust Node.js services with asynchronous validation flows and advanced security middlewares." },
+        { type: "DevOps", name: "DOCKER INFRA", tech: "Docker · CI/CD · Linux", desc: "Docker container-based infrastructure for development and production environments. Automated builds and deployments with CI/CD pipelines." }
       ]
     }
   }[language];

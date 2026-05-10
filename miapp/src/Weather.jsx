@@ -20,12 +20,10 @@ export default function Weather({ language }) {
   if (!weather) return null;
 
   return (
-    <div className="weather-widget" style={{ alignItems: 'center', display: 'inline-flex', gap: '10px', padding: '6px 10px', borderRadius: 28 }}>
-      <span className="weather-icon" style={{ fontSize: '1.15rem' }}>
-        {weather.temperature > 20 ? '☀️' : '☁️'}
-      </span>
-      <span className="weather-temp" style={{ fontWeight: 800, fontSize: '1rem' }}>{Math.round(weather.temperature)}°C</span>
-      <span className="weather-label" style={{ opacity: 0.95 }}>
+    <div className="weather-widget">
+      <span className="weather-icon">{weather.temperature > 20 ? '☀️' : '☁️'}</span>
+      <span className="weather-temp">{Math.round(weather.temperature)}°C</span>
+      <span className="weather-label">
         <GradientText text={language === 'es' ? 'Clima Local' : 'Local Weather'} />
       </span>
     </div>

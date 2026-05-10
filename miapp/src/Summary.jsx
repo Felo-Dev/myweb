@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Colorize from './Colorize';
 import GradientText from './GradientText';
 import profileImg from './assets/imgs/profile.jpg'; // Importamos la imagen correctamente
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,15 +35,15 @@ export default function Summary({ language }) {
   const content = {
     es: { 
       name: "BRANDO FELIPE (Felo-Dev)",
-      role: "DESARROLLADOR COMPLETO",
-      title: "CURRÍCULUM PROFESIONAL",
-      text: "Ingeniero de Software y Desarrollador Full Stack con una sólida trayectoria en la construcción de ecosistemas digitales escalables. Mi enfoque combina la arquitectura robusta del backend (Python, PHP, Node.js) con interfaces de usuario intuitivas y de alto rendimiento (React, React Native)."
+      role: "DESARROLLADOR FULL STACK",
+      title: "RESUMEN PROFESIONAL",
+      text: "Ingeniero de Software y Desarrollador Full Stack con experiencia en la construcción de ecosistemas digitales escalables. Combino backend robusto (Python, PHP, Node.js) con interfaces modernas y de alto rendimiento (React, React Native). Manejo de contenedores Docker, CI/CD y despliegues automatizados para entornos de producción."
     },
     en: { 
       name: "BRANDO FELIPE (Felo-Dev)",
       role: "FULL STACK DEVELOPER",
       title: "PROFESSIONAL SUMMARY",
-      text: "Software Engineer and Full Stack Developer with a solid track record in building scalable digital ecosystems. My approach combines robust backend architecture (Python, PHP, Node.js) with intuitive, high-performance user interfaces (React, React Native)."
+      text: "Software Engineer and Full Stack Developer experienced in building scalable digital ecosystems. I combine robust backend architectures (Python, PHP, Node.js) with modern, high-performance user interfaces (React, React Native). Experienced with Docker containers, CI/CD pipelines, and automated production deployments."
     }
   }[language];
 
@@ -59,9 +58,9 @@ export default function Summary({ language }) {
           />
         </div>
         <div style={{flex: 1}}>
-          <div className="summary-status-bar" style={{display: 'flex', justifyContent: 'flex-start', gap: '1.5rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap'}}>
-            <div style={{opacity: 0.9, fontWeight: 700, fontSize: '0.9rem'}}>{content.role}</div>
-            <div style={{fontFamily: 'monospace', fontSize: '0.9rem', opacity: 0.95}}>
+          <div className="summary-status-bar">
+            <div className="summary-role">{content.role}</div>
+            <div className="summary-location">
               <GradientText text={`${detectedCity || (language === 'es' ? 'OBTENIENDO UBICACIÓN...' : 'FETCHING LOCATION...')} • ${formatTime(time)}`} />
             </div>
           </div>
@@ -72,13 +71,13 @@ export default function Summary({ language }) {
         </div>
       </div>
       <h2 className="section-title"><GradientText text={content.title} /></h2>
-      <p style={{lineHeight: '1.7', fontSize: '1.15rem', maxWidth: '750px', opacity: 0.85, margin: '1rem 0'}}>{content.text}</p>
+      <p className="summary-text">{content.text}</p>
       
       {/* Botón posicionado al final de la sección con icono y texto dinámico */}
       <div style={{ marginTop: '2rem' }}>
         <button className="print-btn" onClick={() => window.print()}>
           <FontAwesomeIcon icon={faDownload} /> 
-          {language === 'es' ? 'Descargar Resumen PDF' : 'Download Resume PDF'}
+          {language === 'es' ? 'Descargar CV' : 'Download Resume'}
         </button>
       </div>
     </section>
